@@ -1,10 +1,14 @@
 <html>
     <head>
         <title>Humidibot</title>
-        <script async src = "./index.js"></script>
     </head>
     <body>
-        <script src = "./controller.js"></script>
+        <script src = "/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io();
+        </script>
+        <script src = "controller.js"></script>
+        <script src = "./dashboard.js"></script>
         <h1>Hello World!</h1>
 
         <!-- Load React. -->
