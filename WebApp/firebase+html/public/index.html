@@ -1,0 +1,49 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="css/style.css" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign in</title>
+</head>
+
+<body>
+  <div class="main" style="height: 550px;">
+
+    <img src="imgs/Humidibot.png" class="logo" alt="Humidibot logo">
+    <a class="name" align="center">Humidibot</a>
+    <p class="sign" align="center">Sign in</p>
+      <input id="email" class="email" type="text" align="center" placeholder="Email">
+      <input id="pass" class="pass" type="password" align="center" placeholder="Password">
+      <button class="submit"  id="SubmitBtn" onclick="toggleLogin()">Submit</button>
+      <a class="register" href="register.html" align="center">Register Here</a>
+      <p class="forgot" align="center"><a href="forgot.html">Forgot Password?</p>
+
+  </div>
+  
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
+
+	<!-- TODO: Add SDKs for Firebase products that you want to use
+		 https://firebase.google.com/docs/web/setup#available-libraries -->
+
+	<script>
+	  // Your web app's Firebase configuration
+	  var firebaseConfig = {
+		apiKey: "AIzaSyB8bMVvji9SwwmGNtPI4LQmk3N418Jo-3k",
+		authDomain: "humidibot-8a6ff.firebaseapp.com",
+		databaseURL: "https://humidibot-8a6ff.firebaseio.com",
+		projectId: "humidibot-8a6ff",
+		storageBucket: "humidibot-8a6ff.appspot.com",
+		messagingSenderId: "280320102386",
+		appId: "1:280320102386:web:bdcc0942e98ea18205a56b"
+	  };
+	  // Initialize Firebase
+	  firebase.initializeApp(firebaseConfig);
+	  var database = firebase.database();
+	</script>
+	<script src="/__/firebase/7.11.0/firebase-auth.js"></script>
+    <script src="login.js"></script>
+</body>
+
+</html>

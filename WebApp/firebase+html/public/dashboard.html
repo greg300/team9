@@ -1,0 +1,46 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="css/dashstyle.css" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard</title>
+</head>
+
+<body>
+	<div id="header">
+		<img src="imgs/Humidibot.png" class="box" id="logo" align="left" alt="Humidibot logo">
+		<p class="sign" >Residence</p>
+		<label class="switch">
+		  <input type="checkbox">
+		  <span class="slider round"></span>
+		</label>
+		<p class="sign" >Greenhouse</p>
+    </div>
+  
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
+
+	<!-- TODO: Add SDKs for Firebase products that you want to use
+		 https://firebase.google.com/docs/web/setup#available-libraries -->
+
+	<script>
+	  // Your web app's Firebase configuration
+	  var firebaseConfig = {
+		apiKey: "AIzaSyB8bMVvji9SwwmGNtPI4LQmk3N418Jo-3k",
+		authDomain: "humidibot-8a6ff.firebaseapp.com",
+		databaseURL: "https://humidibot-8a6ff.firebaseio.com",
+		projectId: "humidibot-8a6ff",
+		storageBucket: "humidibot-8a6ff.appspot.com",
+		messagingSenderId: "280320102386",
+		appId: "1:280320102386:web:bdcc0942e98ea18205a56b"
+	  };
+	  // Initialize Firebase
+	  firebase.initializeApp(firebaseConfig);
+	  var database = firebase.database();
+	</script>
+	<script src="/__/firebase/7.11.0/firebase-auth.js"></script>
+    <script src="login.js"></script>
+</body>
+
+</html>
