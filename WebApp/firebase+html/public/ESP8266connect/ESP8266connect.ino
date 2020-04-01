@@ -15,7 +15,7 @@ DHT dht(DHTPIN, DHTTYPE);
 #define WIFI_SSID "OMEGALUL-2.4G"
 #define WIFI_PASSWORD "micro842"
 
-String myString;
+String currentUser;
 
 void setup(void) {
   //Setup
@@ -30,20 +30,22 @@ void setup(void) {
   Serial.println();
   Serial.print("connected: ");
   Serial.println(WiFi.localIP());
-  
   Firebase.begin(FIREBASE_HOST);
-  
+  currentUser = Firebase.getString("currentUser/currentUser");
 }
 
 void loop(void) {
-   String currentUser = Firebase.getString("currentUser");
+   Serial.print("current user: ");
+   Serial.println(currentUser);
    if (Firebase.failed()) {
         Serial.print("setting /getString failed:");
         Serial.println(Firebase.error());
         return;
   }
-   String humidPath = "users/" + currentUser + "/rooms/latestHumid";
-   String tempPath = "users/" + currentUser + "/rooms/latestTemp";
+   String humidPath = "users/" + currentUser + "/rooms/0/latestHumid";
+   String tempPath = "users/" + currentUser + "/rooms/0/latestTemp";
+   Serial.print("humidPath is: ");
+   Serial.println(humidPath);
    float c = dht.readTemperature();// Read temperature as Celsius (the default)
    float h = dht.readHumidity();// Reading humidity 
    float f = dht.readTemperature(true);// Read temperature as Fahrenheit (isFahrenheit = true)
@@ -62,12 +64,6 @@ void loop(void) {
     Serial.println(" %");
   Firebase.setString(humidPath,humidity);
   Firebase.setString(tempPath,temperature);
-  
-
-  
-  
   delay(2000);
-
-  
 }
  

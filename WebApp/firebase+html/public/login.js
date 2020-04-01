@@ -23,8 +23,11 @@ function toggleLogin() {
 		}
 		// Sign in with email and pass.
 		firebase.auth().signInWithEmailAndPassword(x, y).then(function() {
-			
+			console.log(firebase.auth().currentUser.uid);
 			window.location.replace('https://humidibot-8a6ff.firebaseapp.com/dashboard.html');
+			database.ref('/currentUser').set({
+				currentUser: firebase.auth().currentUser.uid
+			});
 		}).catch(function(error) {
 		  // Handle Errors here.
 		  var errorCode = error.code;
@@ -89,17 +92,22 @@ function validateForm() {
 		let uid = user.uid;
 		database.ref('users/' + uid).set({
 			roomCount: 1,
-			rooms: {
+			rooms: [
+			{
 				name: "Default Room",
-				latestTemp: 50,
-				latestHumid: 50,
+				latestTemp: "X",
+				latestHumid: "X"
 			}
-		database.ref('parameters/' + uid).set({
-			door: false;
-			fan: false;
-			windows: false;
-			}
+			]
 		});
+		database.ref('parameters/' + uid).set(
+		[{
+			door: false,
+			fan: false,
+			windows: false,
+		}
+		]
+		);
 		
 		window.location.replace('https://humidibot-8a6ff.firebaseapp.com/');
 		alert("Registration successful!");
@@ -119,3 +127,5 @@ function validateForm() {
 		
 	
 }
+
+

@@ -28,8 +28,9 @@
 <body>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top barcolor" id="navtop">
     <div class="container">
+		<button class ="navbar-brand" id="logout" onclick="toggleLogin()"><</button>
       <a class="navbar-brand" href="#">Humidibot</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -58,14 +59,14 @@
     <!-- Jumbotron Header -->
     
       <h1 class="display-3" id="welcome">Welcome!</h1>
-      <p id="statusMessage" class="lead"></p>
+      <div id="switch">
 	  <p class="switchText" id="residence" >RESIDENCE</p>
 	 	<label class="switch">
-		  <input type="checkbox">
+		  <input type="checkbox" id="mode" onclick="toggleMode()">
 		  <span class="slider round"></span>
 		</label>
 		<p class="switchText" id="greenhouse" >GREENHOUSE</p>
-	
+		</div>
 	</div>
 	<div class="container">
 
@@ -77,10 +78,11 @@
         <div class="card" id="cardextra">
           <div class="card-body">
             <h4 class="card-title">Default Room</h4>
-            <p class="card-text"> Humidity: X%<br>Temperature: Xdeg</p>
+            <p class="card-text">Humidity: &nbsp; <span id="hum"></span> &nbsp;%
+			<br>Temperature: &nbsp; <span id="temp"></span> &nbsp;deg</p>
           </div>
           <div class="card-footer">
-            <a href="#" class="btn btn-primary">Details</a>
+            <a href="https://humidibot-8a6ff.firebaseapp.com/roomview.html" class="btn btn-primary">Details</a>
           </div>
         </div>
       </div>
@@ -95,9 +97,9 @@
   <!-- /.container -->
 
   <!-- Footer -->
-  <footer class="py-5 bg-success" id="footer">
-    
-      <p class="m-0 text-center text-white">Humidibot</p>
+  <footer class="py-5 footer barcolor" id="footercolor">
+
+		<p class="m-0 text-center text-white">Humidibot</p>
     
     <!-- /.container -->
   </footer>
@@ -108,5 +110,31 @@
   <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
 </body>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
+
+	<!-- TODO: Add SDKs for Firebase products that you want to use
+		 https://firebase.google.com/docs/web/setup#available-libraries -->
+	<script src="/__/firebase/7.11.0/firebase-auth.js"></script>
+	<script src="/__/firebase/7.11.0/firebase-database.js"></script>
+	<script>
+	  // Your web app's Firebase configuration
+	  var firebaseConfig = {
+		apiKey: "AIzaSyB8bMVvji9SwwmGNtPI4LQmk3N418Jo-3k",
+		authDomain: "humidibot-8a6ff.firebaseapp.com",
+		databaseURL: "https://humidibot-8a6ff.firebaseio.com",
+		projectId: "humidibot-8a6ff",
+		storageBucket: "humidibot-8a6ff.appspot.com",
+		messagingSenderId: "280320102386",
+		appId: "1:280320102386:web:bdcc0942e98ea18205a56b"
+	  };
+	  // Initialize Firebase
+	  firebase.initializeApp(firebaseConfig);
+	  
+	</script>
+	
+    <script src="login.js"></script>
+	<script src="dashboard.js"></script>
 
 </html>

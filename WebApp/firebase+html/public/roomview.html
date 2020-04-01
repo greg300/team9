@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Room View</title>
+
+<link href="https://fonts.googleapis.com/css?family=Lora:400,700|Montserrat:300" rel="stylesheet">
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/heroic-features.css" rel="stylesheet">
+  
+  <!-- slider css -->
+  <link href="css/slider.css" rel="stylesheet">
+  
+  <!-- room css -->
+  <link href="css/room.css" rel="stylesheet">
+  
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top barcolor" id="navtop">
+    <div class="container">
+		<button class ="navbar-brand" id="logout" onclick="window.location.replace('https://humidibot-8a6ff.firebaseapp.com/dashboard.html')"><</button>
+		<a class="navbar-brand" href="#">Humidibot</a>
+		<div style="position: relative; margin-left: 13%; margin-right: auto;">
+		<a class="navbar-brand switchtext" id="residence">RESIDENCE</a>
+		<div class="navbar-brand" id="switch">
+			 <label class="switch" id="roomslider">
+			 <input type="checkbox" id="mode" onclick="toggleMode()">
+			 <span class="slider round"></span>
+			</label>
+		</div>
+		<a class="navbar-brand" id="greenhouse" >GREENHOUSE</a>
+		</div>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item"> 
+            <a class="nav-link" href="#">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div >
+  <h1 class="title">Default Room</h1></br>
+  <h1 class="title subtitle" style="position:relative;">Parameters:</h1><br>
+  
+  <!-- Parameter blocks -->
+  <div class="parameter" align="center">
+	<div class="main" style="display:inline-block; margin-top: 20px; width: 150px; height: 150px;">
+		<br><a class="regulartext" style="padding-left: 33%;">Door</a><br>
+		<label class="switch">
+		  <input type="checkbox">
+		  <span class="slider-red round" id="roomswitch"></span>
+		</label>
+	</div>
+	<div class="main" style="display:inline-block;margin-left: 50px; margin-top: 20px; width: 150px; height: 150px;">
+		<br><a class="regulartext" style="padding-left: 25%;">Window</a><br>
+		<label class="switch">
+		  <input type="checkbox">
+		  <span class="slider-red round" id="roomswitch"></span>
+		</label>
+	</div>
+	<div class="main" style="display:inline-block;margin-left: 50px; margin-top: 20px; width: 150px; height: 150px;">
+		<br><a class="regulartext" style="padding-left: 35%;">Fan</a><br>
+		<label class="switch">
+		  <input type="checkbox">
+		  <span class="slider-red round" id="roomswitch"></span>
+		</label>
+	</div>
+	<br>
+	<div class="main" style="display:inline-block; margin-top: 0px; width: 150px; height: 150px;">
+		<br><a class="regulartext" style="padding-left: 15%;">Humidifier</a><br>
+		<label class="switch">
+		  <input type="checkbox">
+		  <span class="slider-red round" id="roomswitch"></span>
+		</label>
+	</div>
+	<div class="main" style="display:inline-block;margin-left: 50px; margin-top: 0px; width: 150px; height: 150px;">
+		<br><a class="regulartext" style="padding-left: 10%;">Dehumidifier</a><br>
+		<label class="switch">
+		  <input type="checkbox">
+		  <span class="slider-red round" id="roomswitch"></span>
+		</label>
+	</div>
+	</div>
+	<!-- end of paremeter blocks -->
+	<br>
+	<h1 class="title subtitle" style="position:relative;">Course of Action:</h1><br>
+		</div>
+
+  <!-- Footer -->
+  <footer class="py-5 footer barcolor" id="footercolor">
+
+		<p class="m-0 text-center text-white">Humidibot</p>
+    
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+</body>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.11.0/firebase-app.js"></script>
+
+	<!-- TODO: Add SDKs for Firebase products that you want to use
+		 https://firebase.google.com/docs/web/setup#available-libraries -->
+	<script src="/__/firebase/7.11.0/firebase-auth.js"></script>
+	<script src="/__/firebase/7.11.0/firebase-database.js"></script>
+	<script>
+	  // Your web app's Firebase configuration
+	  var firebaseConfig = {
+		apiKey: "AIzaSyB8bMVvji9SwwmGNtPI4LQmk3N418Jo-3k",
+		authDomain: "humidibot-8a6ff.firebaseapp.com",
+		databaseURL: "https://humidibot-8a6ff.firebaseio.com",
+		projectId: "humidibot-8a6ff",
+		storageBucket: "humidibot-8a6ff.appspot.com",
+		messagingSenderId: "280320102386",
+		appId: "1:280320102386:web:bdcc0942e98ea18205a56b"
+	  };
+	  // Initialize Firebase
+	  firebase.initializeApp(firebaseConfig);
+	  
+	</script>
+	
+    <script src="login.js"></script>
+	<script src="dashboard.js"></script>
+
+</html>
