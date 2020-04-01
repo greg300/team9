@@ -35,8 +35,8 @@ void setup(void) {
 }
 
 void loop(void) {
-   Serial.print("current user: ");
-   Serial.println(currentUser);
+   //Serial.print("current user: ");
+   //Serial.println(currentUser);
    if (Firebase.failed()) {
         Serial.print("setting /getString failed:");
         Serial.println(Firebase.error());
@@ -44,8 +44,6 @@ void loop(void) {
   }
    String humidPath = "users/" + currentUser + "/rooms/0/latestHumid";
    String tempPath = "users/" + currentUser + "/rooms/0/latestTemp";
-   Serial.print("humidPath is: ");
-   Serial.println(humidPath);
    float c = dht.readTemperature();// Read temperature as Celsius (the default)
    float h = dht.readHumidity();// Reading humidity 
    float f = dht.readTemperature(true);// Read temperature as Fahrenheit (isFahrenheit = true)
