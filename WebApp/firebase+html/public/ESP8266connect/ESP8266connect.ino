@@ -12,8 +12,8 @@ DHT dht(DHTPIN, DHTTYPE);
 
 #define FIREBASE_HOST "humidibot-8a6ff.firebaseio.com"
 #define FIREBASE_AUTH "E5upxJETRui3YOp2bXhyla7iSwF5bHwBTcvo1lPi"
-#define WIFI_SSID "OMEGALUL-2.4G"
-#define WIFI_PASSWORD "micro842"
+#define WIFI_SSID "SoftEng-9-2.4"
+#define WIFI_PASSWORD "group9pw"
 
 String currentUser;
 
@@ -35,6 +35,7 @@ void setup(void) {
 }
 
 void loop(void) {
+  
    //Serial.print("current user: ");
    //Serial.println(currentUser);
    if (Firebase.failed()) {
