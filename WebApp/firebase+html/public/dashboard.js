@@ -19,8 +19,11 @@ function passSSID() {
 			else {
 				alert("Rooms Created");
 				updates[ssidPath + '/roomCount'] = snapshot.val();
-				updateAccount(x, uid);
 				//htmlnodePopulate(snapshot.val());
+				//^^ this is the function that needs to be worked on
+				//probably need to set a small timeout for below function after nodes are populated
+				updateAccount(x, uid);
+				
 			}
 		});
 	} else {
@@ -85,41 +88,6 @@ function templisten(tempstring, tempRef, uid, count) {
 		return firebase.database().ref().update(updates);
 	});
 }
-
-//updates readings to html
-function updateReadings(roomId, ssid, uid) {
-	console.log("starting updateReadings");
-	console.log("roomId is " + roomId);
-	var idnum = roomId + 1;
-	var humstring = "hum" + idnum;
-	var tempstring = "temp" + idnum;
-	var x, y;
-	var humPath = "ssids/" + ssid +  + roomId + "/latestHumid";
-	var tempPath = "users/" + uid + "/rooms/" + roomId + "/latestTemp";
-	var humRef = firebase.database().ref(humPath);
-	var tempRef = firebase.database().ref(tempPath);
-	humRef.on('value', function(snapshot) {
-		console.log("humsnapshot.val is " + snapshot.val());
-		updates[humPath] = snapshot.val();
-		x = document.getElementById(humstring);
-		x.innerText = snapshot.val();
-		console.log(`hum${idnum}`);
-	});
-	tempRef.on('value', function(snapshot) {
-		console.log("tempsnapshot.val is " + snapshot.val());
-		updates[tempPath] = snapshot.val();
-		y = document.getElementById(tempstring);
-		y.innerText = snapshot.val();
-		console.log(`temp${idnum}`);
-	});
-	setTimeout(() => {
-		console.log("leaving updateReadings");
-		return firebase.database().ref().update(updates);
-	}, 50);
-}
-
-
-
 
 function htmlnodePopulate(roomCount) {
 	
