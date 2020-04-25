@@ -25,9 +25,7 @@ function toggleLogin() {
 		firebase.auth().signInWithEmailAndPassword(x, y).then(function() {
 			console.log(firebase.auth().currentUser.uid);
 			window.location.replace('https://humidibot-8a6ff.firebaseapp.com/dashboard.html');
-			database.ref('/currentUser').set({
-				currentUser: firebase.auth().currentUser.uid
-			});
+			
 		}).catch(function(error) {
 		  // Handle Errors here.
 		  var errorCode = error.code;
@@ -91,23 +89,9 @@ function validateForm() {
 		var user = firebase.auth().currentUser;
 		let uid = user.uid;
 		database.ref('users/' + uid).set({
-			roomCount: 1,
-			rooms: [
-			{
-				name: "Default Room",
-				latestTemp: "X",
-				latestHumid: "X"
-			}
-			]
+			roomCount: 0,
+			SSID: "defaultSSID",
 		});
-		database.ref('parameters/' + uid).set(
-		[{
-			door: false,
-			fan: false,
-			windows: false,
-		}
-		]
-		);
 		
 		window.location.replace('https://humidibot-8a6ff.firebaseapp.com/');
 		alert("Registration successful!");

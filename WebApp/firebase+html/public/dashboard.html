@@ -32,6 +32,11 @@
     <div class="container">
 		<button class ="navbar-brand" id="logout" onclick="toggleLogin()"><</button>
       <a class="navbar-brand" href="#">Humidibot</a>
+		<a class="nav-item" align="center">
+		  <a class="navbar-brand" href="#">Network ID:</a>
+		  <input id="SSID" class="email" type="text" align="center" placeholder="SSID">
+		  <button class="register" id="SubmitBtn" onclick="passSSID()">Submit</button> 
+		</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -74,12 +79,12 @@
     <div class="row text-center">
 	
 		<!-- Default Room (CANNOT BE DELETED)-->
-      <div class="col-lg-3 col-md-6 mb-4">
+      <div class="col-lg-3 col-md-6 mb-4" id="room1">
         <div class="card" id="cardextra">
           <div class="card-body">
             <h4 class="card-title">Default Room</h4>
-            <p class="card-text">Humidity: &nbsp; <span id="hum"></span> &nbsp;%
-			<br>Temperature: &nbsp; <span id="temp"></span> &nbsp;deg</p>
+            <p class="card-text">Humidity: &nbsp; <span id="hum1"></span> &nbsp;%
+			<br>Temperature: &nbsp; <span id="temp1"></span> &nbsp;deg</p>
           </div>
           <div class="card-footer">
             <a href="https://humidibot-8a6ff.firebaseapp.com/roomview.html" class="btn btn-primary">Details</a>
@@ -88,7 +93,18 @@
       </div>
 
       <!-- Additional Rooms -->
-
+	<div class="col-lg-3 col-md-6 mb-4" id="room2">
+        <div class="card" id="cardextra">
+          <div class="card-body">
+            <h4 class="card-title">Default Room</h4>
+            <p class="card-text">Humidity: &nbsp; <span id="hum2"></span> &nbsp;%
+			<br>Temperature: &nbsp; <span id="temp2"></span> &nbsp;deg</p>
+          </div>
+          <div class="card-footer">
+            <a href="https://humidibot-8a6ff.firebaseapp.com/roomview.html" class="btn btn-primary">Details</a>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- /.row  (Additional Rows) when above row exceeds 4)-->
 	

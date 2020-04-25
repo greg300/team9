@@ -12,10 +12,15 @@ DHT dht(DHTPIN, DHTTYPE);
 
 #define FIREBASE_HOST "humidibot-8a6ff.firebaseio.com"
 #define FIREBASE_AUTH "E5upxJETRui3YOp2bXhyla7iSwF5bHwBTcvo1lPi"
-#define WIFI_SSID "SoftEng-9-2.4"
+#define WIFI_SSID "SoftEng"
 #define WIFI_PASSWORD "group9pw"
 
-String currentUser;
+String wifissid = WIFI_SSID;
+bool sensorBool;
+int sensorNum;
+String sensorBoolPath;
+String sensorNumPath;
+String macAdd = WiFi.macAddress();
 
 void setup(void) {
   //Setup
@@ -30,21 +35,35 @@ void setup(void) {
   Serial.println();
   Serial.print("connected: ");
   Serial.println(WiFi.localIP());
+  
   Firebase.begin(FIREBASE_HOST);
-  currentUser = Firebase.getString("currentUser/currentUser");
+  Serial.print("Printing for: ");
+  Serial.println(WiFi.macAddress());
+  sensorBoolPath = "/ssids/" + wifissid + "/" + macAdd + "/sensorBool";
+  sensorNumPath = "/ssids/" + wifissid + "/sensorNum";
+  sensorBool = Firebase.getBool(sensorBoolPath); 
+  sensorNum = Firebase.getInt(sensorNumPath);
+  
+  if (sensorNum == 0) {
+    Firebase.set(sensorNumPath,0);
+    if (Firebase.failed())
+      Serial.println("could not set");
+  }//unnecessary bit of code, just for safety
+
+  //appending to sensorNum, helping decide how many room nodes to make
+  if (sensorBool == false) {
+    Firebase.set(sensorBoolPath, true);
+    sensorNum++;
+    Firebase.set(sensorNumPath,sensorNum);
+    if (Firebase.failed())
+      Serial.println("could not set");
+  }
 }
 
 void loop(void) {
   
-   //Serial.print("current user: ");
-   //Serial.println(currentUser);
-   if (Firebase.failed()) {
-        Serial.print("setting /getString failed:");
-        Serial.println(Firebase.error());
-        return;
-  }
-   String humidPath = "users/" + currentUser + "/rooms/0/latestHumid";
-   String tempPath = "users/" + currentUser + "/rooms/0/latestTemp";
+   String humidPath = "ssids/" + wifissid + "/" + macAdd + "/latestHumid";
+   String tempPath = "ssids/" + wifissid + "/" + macAdd + "/latestTemp";
    float c = dht.readTemperature();// Read temperature as Celsius (the default)
    float h = dht.readHumidity();// Reading humidity 
    float f = dht.readTemperature(true);// Read temperature as Fahrenheit (isFahrenheit = true)
