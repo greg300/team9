@@ -1,13 +1,20 @@
 var ssid = 0;
 var macAdd = 0;
 var updates = {};
+var userInfo;
 
 //this function should reconnect new SSID and potentially populate new roomCount
 function passSSID() {
-	var x = document.getElementById("SSID").value;
-	var user = firebase.auth().currentUser;
-	if (user) {
-		var uid = user.uid;
+	if (ssid == 0) {
+		console.log("ssid is default");
+		var x = document.getElementById("SSID").value;
+	} else {
+		console.log("ssid is " + ssid);
+		var x = ssid;
+	}
+	userInfo = firebase.auth().currentUser;
+	if (userInfo) {
+		var uid = userInfo.uid;
 		var ssidPath = "users/" + uid;
 		updates[ssidPath + '/SSID'] = x;
 		//ssid has been passed to account db info
@@ -19,10 +26,12 @@ function passSSID() {
 			else {
 				alert("Rooms Created");
 				updates[ssidPath + '/roomCount'] = snapshot.val();
-				//htmlnodePopulate(snapshot.val());
+				htmlnodecreation(snapshot.val());
 				//^^ this is the function that needs to be worked on
 				//probably need to set a small timeout for below function after nodes are populated
-				updateAccount(x, uid);
+				setTimeout(() => {
+					updateAccount(x, uid);
+				}, 100);
 				
 			}
 		});
@@ -49,16 +58,15 @@ function updateAccount(ssid, uid) {
 		while (count < arr.length) {
 			console.log("inside for loop with count = " + count);
 			console.log("arr[count] is " + arr[count]);
-			var idnum = count + 1;
-			var humstring = "hum" + idnum;
-			var tempstring = "temp" + idnum;
 			//listeners
+			var humstr = "hum" + count;
+			var tempstr = "temp" + count;
 			var humPath = "ssids/" + ssid + "/" + arr[count] + "/latestHumid";
 			var tempPath = "ssids/" + ssid + "/" + arr[count] + "/latestTemp";
 			var humRef = firebase.database().ref(humPath);
 			var tempRef = firebase.database().ref(tempPath);
-			humlisten(humstring, humRef, uid, count);
-			templisten(tempstring, tempRef, uid, count);
+			humlisten(humstr, humRef, uid, count);
+			templisten(tempstr, tempRef, uid, count);
 			updates["users/" + uid + "/rooms/" + count + "/macAddress"] = arr[count];
 			count++;
 		}
@@ -67,36 +75,86 @@ function updateAccount(ssid, uid) {
 	},50);	
 }
 
-function humlisten(humstring, humRef, uid, count) {
+function humlisten(humstr, humRef, uid, count) {
 	var x;
 	humRef.on('value', function(snapshot) {
 		console.log("humsnapshot.val is " + snapshot.val());
 		updates["users/" + uid + "/rooms/" + count + "/latestHumid"] = snapshot.val();
-		x = document.getElementById(humstring);
+		x = document.getElementById(humstr);
 		x.innerText = snapshot.val();
 		return firebase.database().ref().update(updates);
 	});
 }
 
-function templisten(tempstring, tempRef, uid, count) {
+function templisten(tempstr, tempRef, uid, count) {
 	var y;
 	tempRef.on('value', function(snapshot) {
 		console.log("tempsnapshot.val is " + snapshot.val());
 		updates["users/" + uid + "/rooms/" + count + "/latestTemp"] = snapshot.val();
-		y = document.getElementById(tempstring);
+		y = document.getElementById(tempstr);
 		y.innerText = snapshot.val();
 		return firebase.database().ref().update(updates);
 	});
 }
 
-function htmlnodePopulate(roomCount) {
-	
-	
+function htmlnodecreation(roomnum) {
+	for (var i = 0; i < roomnum; i++) {	
+		console.log("in html with i=" + i);
+		var humstr = "hum" + i;
+		var tempstr = "temp" + i;
+		var roomstr = "room_" + i;
+		var linebr = document.createElement("br");
+		
+		var div = document.getElementById(roomstr);//HERE
+			var subdiv1 = document.createElement("div");
+			subdiv1.setAttribute('class','card');
+			subdiv1.setAttribute('id','cardextra');
+				var subdiv2 = document.createElement("div");
+				subdiv2.setAttribute('class','card-body');
+					var h4 = document.createElement("h4");
+					h4.setAttribute('class','card-title');
+					h4.textContent = "Default Room";
+					subdiv2.appendChild(h4);
+					
+					var p = document.createElement("p");
+					p.setAttribute('class','card-text');
+					p.textContent = "Humidity:"+String.fromCharCode(160);
+					subdiv2.appendChild(p);
+					
+					var hum = document.createElement("span");
+					hum.setAttribute('id',humstr);//HERE
+					p.appendChild(hum);
+					
+					var percent = document.createTextNode("%");
+					p.appendChild(percent);
+					p.appendChild(linebr);
+					
+					var temptext = document.createTextNode("Temperature:" + String.fromCharCode(160));
+					p.appendChild(temptext);
+					
+					var temp = document.createElement("span");
+					temp.setAttribute('id',tempstr);//HERE
+					p.appendChild(temp);
+					
+					var deg = document.createTextNode(String.fromCharCode(160) + "deg");
+					p.appendChild(deg);
+				var subdiv3 = document.createElement("div");
+				subdiv3.setAttribute('class','card-footer');
+					var details = document.createElement("a");
+					details.setAttribute('href','https://humidibot-8a6ff.firebaseapp.com/roomview.html');
+					details.setAttribute('class','btn btn-primary');
+					details.textContent = "Details";
+					subdiv3.appendChild(details);
+			subdiv1.appendChild(subdiv2);
+			subdiv1.appendChild(subdiv3);
+		div.appendChild(subdiv1);
+	}
 }
 
 function readSSID(ssidRef) {
 	ssidRef.once('value',function(snapshot) {
-		return snapshot.val();
+		console.log("inside readSSID snap is " + snapshot.val());
+		ssid = snapshot.val();
 	});
 }
 
@@ -106,29 +164,37 @@ function readmacAdd(macAddRef) {
 	});	
 }
 
+//authentication listener, kind of broken as it triggers even when
+//changing webpages for some odd reason.
 
-//this should be for setup when user first logs in
-//populate roomcount and connect already present SSID to rooms
-//the user should turn on their devices in the order they want them to appear for first time setup
-//then they can rename them
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-	var uid = user.uid;
-	var roomCount = firebase.database().ref("users/" + uid + "/roomCount");
+
+document.addEventListener("DOMContentLoaded", function() {
+	firebase.auth().onAuthStateChanged(function(user) {
+		userInfo = firebase.auth().currentUser;
+	});
 	
-	//htmlblah to create X html elements from roomCount.
-	
-	//let's first assume there is already 1 room with defined elements hum1 and temp1
-	
-	//get SSID
-	var ssidRef = firebase.database().ref("users/" + uid + "/SSID");
-	ssid = readSSID(ssidRef);
-	
-	
-	} else {
-    console.log("null user");
-  }
+	setTimeout(() => {
+		console.log("about to call setup()");
+		setup();
+	}, 200);
 });
+
+//first load setup
+function setup() {
+	if (userInfo) {
+	    console.log("in auth (user)");
+		var uid = userInfo.uid;
+		var ssidRef = firebase.database().ref("users/" + uid + "/SSID");
+		readSSID(ssidRef);
+		setTimeout(() => {
+			console.log("about to passSSID");
+			console.log("ssid is " + ssid);
+			passSSID();
+		},200);
+	} else {
+		console.log("null user");
+	}
+}
 
 function toggleMode() {
 	if ( document.getElementById("mode").checked == true) {
