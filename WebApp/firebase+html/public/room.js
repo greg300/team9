@@ -8,7 +8,11 @@ var updates = {};
 var refpath = "parameters/" + uid + "/" + roomnum;
 var REF = firebase.database().ref(refpath);
 var params = [];
-var dehum, door, fan, humid, win;
+var	dehum = document.getElementById("dehumidifier");
+var	door = document.getElementById("door");
+var	fan = document.getElementById("fan");
+var	humid = document.getElementById("humidifier");
+var	win = document.getElementById("window");	
 var roomname = document.getElementById("roomname");
 var humPath = "ssids/" + ssid + "/" + macAdd + "/latestHumid";
 var tempPath = "ssids/" + ssid + "/" + macAdd + "/latestTemp";
@@ -37,11 +41,7 @@ roomname.addEventListener("input", function() {
 });
 
 function paramSetup() {
-	dehum = document.getElementById("dehumidifier");
-	door = document.getElementById("door");
-	fan = document.getElementById("fan");
-	humid = document.getElementById("humidifier");
-	win = document.getElementById("window");	
+	
 	
 	if (params[0] == true) {
 		dehum.setAttribute("checked","true");
