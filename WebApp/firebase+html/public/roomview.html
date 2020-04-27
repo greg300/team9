@@ -67,8 +67,9 @@
 
   <!-- Page Content -->
   <div >
-  <h1 class="title">Default Room</h1></br>
-  <h1 class="title subtitle" style="position:relative;">Parameters:</h1><br>
+  <h1 class="title" contenteditable="true" id="roomname"></h1></br>
+  <h1 class="title subtitle" style="position:relative;"><div class="colum">Humidity: &nbsp;<span id="humidityRead"></span>%
+	<br>Temperature: &nbsp;<span id="tempRead"></span>&nbsp; deg</div></h1><br>
   
   <!-- Parameter blocks -->
   <div class="parameter" align="center">
@@ -89,7 +90,7 @@
 	<div class="main" style="display:inline-block;margin-left: 50px; margin-top: 20px; width: 150px; height: 150px;">
 		<br><a class="regulartext" style="padding-left: 35%;">Fan</a><br>
 		<label class="switch">
-		  <input type="checkbox" id="Fan" onclick="updateParams()">
+		  <input type="checkbox" id="fan" onclick="updateParams()">
 		  <span class="slider-red round" id="roomswitch"></span>
 		</label>
 	</div>
@@ -108,9 +109,11 @@
 		  <span class="slider-red round" id="roomswitch"></span>
 		</label>
 	</div>
+	
 	</div>
+	
 	<!-- end of paremeter blocks -->
-	<br>
+	
 	<h1 class="title subtitle" style="position:relative;">Course of Action:</h1><br>
 		</div>
 
