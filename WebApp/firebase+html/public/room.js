@@ -18,6 +18,8 @@ var humPath = "ssids/" + ssid + "/" + macAdd + "/latestHumid";
 var tempPath = "ssids/" + ssid + "/" + macAdd + "/latestTemp";
 var humRef = firebase.database().ref(humPath);
 var tempRef = firebase.database().ref(tempPath);
+var x = document.getElementById("humidityRead");
+var y = document.getElementById("tempRead");
 
 document.addEventListener("DOMContentLoaded", function() {
 	humlisten();
@@ -25,10 +27,10 @@ document.addEventListener("DOMContentLoaded", function() {
 	readRoomName();
 	REF.once('value',function(snapshot) {
 		params = Object.values(snapshot.val());
-		console.log(params);
+		//console.log(params);
 	});
 	setTimeout(() => {
-		console.log(params);
+		//console.log(params);
 		paramSetup();
 	}, 600);
 });
@@ -41,8 +43,6 @@ roomname.addEventListener("input", function() {
 });
 
 function paramSetup() {
-	
-	
 	if (params[0] == true) {
 		dehum.setAttribute("checked","true");
 		dehum.checked = true;
@@ -63,8 +63,19 @@ function paramSetup() {
 		win.setAttribute("checked","true");
 		win.checked = true;
 	}
+	
+	var arr = params;
+	//console.log("in setup: arr is " + params);
+	var mode = document.getElementById("mode");
+	if ( mode.checked == true ) {
+		plantcourseChange(params);
+	} else {
+		courseChange(params);
+	}
 
 }
+
+
 
 function updateParams() {
 	console.log("in updateParams");
@@ -81,13 +92,155 @@ function updateParams() {
 	updates[refpath + "/humidifier"] = humid;
 	updates[refpath + "/window"] = win;
 	
+	var arr = [dehum, door, fan, humid, win];
+	//console.log("in updateParams: arr is " + arr);
+	var mode = document.getElementById("mode");
+	if ( mode.checked == true ) {
+		plantcourseChange(arr);
+	} else {
+		courseChange(arr);
+	}
 	setTimeout(() => {
 		return firebase.database().ref().update(updates);
 	}, 200);
 }
 
+function plantcourseChange(arr) {
+	//0 is dehum, 1 is door, 2 is fan, 3 is humid, 4 is win
+	//x.innerText is humidity y.innerText is temperature
+	//course is course-of-action text
+	var recarr = arr;
+	
+	
+	console.log("in plant course change with arr = " + arr);
+	var dehum = recarr[0];
+	var door = recarr[1];
+	var fan = recarr[2];
+	var humid = recarr[3];
+	var win = recarr[4];
+	var course = document.getElementById("course")
+	var humidity = x.innerText;
+	var temperature = y.innerText;
+	console.log("course is set to " + course + " and humidity is " + humidity + " and temperature is " + temperature);
+	
+	//Cases
+	//Case 1 Temp < 60 Humidity < 35
+	if ( humidity < 50 )
+	{
+		if ( temperature <= 60 ) {
+			//Dry and Cold
+		} else if ( temperature > 60 && temperature <= 75 ) {
+			console.log("in expected cat");
+			course.innerHTML = "The environment is too dry for your plants."
+			if (dehum == true)
+				course.innerHTML += " Turn off your dehumidifier if it's on.";
+			if (win == true)
+				course.innerHTML += " Close a window.";
+			if (fan == true)
+				course.innerHTML += " You can also try turning off any fans.";
+			else if (door == true)
+				course.innerHTML += " You can also close any doors.";
+		} else if ( temperature > 75 ) {
+			//Dry and Hot
+		}
+	}
+	else if ( humidity >= 50 && humidity < 70)
+	{ //Humidity is Fine
+		if ( temperature <= 60 ) {
+			//Cold
+		} else if ( temperature > 60 && temperature <= 75 ) {
+			//Perfect
+			course.innerHTML = "All temperatures are in desired ranges."
+		} else if ( temperature > 75 ) {
+			//Hot
+		}
+	}
+	else if ( humidity >= 70 )
+	{
+		if ( temperature <= 60 ) {
+			//Moist and Cold
+		} else if ( temperature > 60 && temperature <= 75 ) {
+			//Moist and temp fine
+			course.innerHTML = "The environment is too humid."
+			if (dehum == true)
+				course.innerHTML += " Turn on your dehumidifier.";
+			if (win == true)
+				course.innerHTML += " Open your window.";
+			if (fan == true)
+				course.innerHTML += " You can also turn on your fan.";
+			else if (door == true)
+				course.innerHTML += " You can also open your door.";
+		} else if ( temperature > 75 ) {
+			//Moist and Hot
+		}
+	}
+}
+
+function courseChange(arr) {
+	//0 is dehum, 1 is door, 2 is fan, 3 is humid, 4 is win
+	//x.innerText is humidity y.innerText is temperature
+	//course is course-of-action text
+	var recarr = arr;
+	
+	
+	console.log("in course change with arr = " + arr);
+	var dehum = recarr[0];
+	var door = recarr[1];
+	var fan = recarr[2];
+	var humid = recarr[3];
+	var win = recarr[4];
+	var course = document.getElementById("course")
+	var humidity = x.innerText;
+	var temperature = y.innerText;
+	console.log("course is set to " + course + " and humidity is " + humidity + " and temperature is " + temperature);
+	
+	//Cases
+	//Case 1 Temp < 60 Humidity < 35
+	if ( humidity < 30 )
+	{
+		if ( temperature <= 60 ) {
+			//Dry and Cold
+		} else if ( temperature > 60 && temperature <= 75 ) {
+			//Dry and temp Fine
+		} else if ( temperature > 75 ) {
+			//Dry and Hot
+		}
+	}
+	else if ( humidity >= 30 && humidity < 50)
+	{ //Humidity is Fine
+		if ( temperature <= 60 ) {
+			//Cold
+		} else if ( temperature > 60 && temperature <= 75 ) {
+			//Perfect
+			course.innerHTML = "All temperatures are in desired ranges."
+		} else if ( temperature > 75 ) {
+			//Hot
+		}
+	}
+	else if ( humidity >= 50 )
+	{
+		if ( temperature <= 60 ) {
+			//Moist and Cold
+		} else if ( temperature > 60 && temperature <= 75 ) {
+			//Moist and temp fine
+			course.innerHTML = "The environment is too humid."
+			if (dehum == true)
+				course.innerHTML += " Turn on your dehumidifier.";
+			if (win == true)
+				course.innerHTML += " Or open your window.";
+			if (fan == true)
+				course.innerHTML += " You can also turn on your fan.";
+			else if (door == true)
+				course.innerHTML += " You can also open your door.";
+		} else if ( temperature > 75 ) {
+			//Moist and Hot
+		}
+	}
+	
+}
+
 function humlisten() {
-	var x = document.getElementById("humidityRead");
+	
 	humRef.on('value', function(snapshot) {
 		console.log("humidity is reading " + snapshot.val());
 		x.innerText = snapshot.val();
@@ -95,7 +248,7 @@ function humlisten() {
 }
 
 function templisten() {
-	var y = document.getElementById("tempRead");
+	
 	tempRef.on('value', function(snapshot) {
 		y.innerText = snapshot.val();
 	});
@@ -110,6 +263,7 @@ function readRoomName() {
 }
 
 function toggleMode() {
+	updateParams();
 	if ( document.getElementById("mode").checked == true) {
 		
 		document.getElementById("navtop").style.backgroundColor = "#88db84";

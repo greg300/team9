@@ -25,9 +25,11 @@ function passSSID() {
 			if (snapshot.val() == null)
 				alert("Invalid SSID");
 			else {
+				clearNodes(uid,snapshot.val());
 				updates[ssidPath + '/roomCount'] = snapshot.val();
 				htmlnodecreation(uid, snapshot.val());
 				setTimeout(() => {
+					console.log("about to update...");
 					setroomnames(snapshot.val());
 					updateAccount(x, uid);
 				}, 100);
@@ -42,8 +44,19 @@ function passSSID() {
 	}, 200);
 }
 
+function clearNodes(uid, roomnum) {
+	for (var i = 0; i < roomnum; i++) {
+		var roomstr = "room_" + i;
+		var roomid = "id_" + i;
+		var maindiv = document.getElementById(roomstr);	
+		var subdiv = document.getElementById(roomid);
+		console.log("main div is " + maindiv + " and subdiv is " + subdiv);
+		if (maindiv != null && subdiv != null)
+			maindiv.removeChild(subdiv);
+	}
+}
+
 function setroomnames(roomnum) {
-	
 	for (var i = 0; i < roomnum; i++)
 	{
 		var roomstrtitleid = "room_" + i + "_title";
@@ -88,7 +101,7 @@ function updateAccount(ssid, uid) {
 function humlisten(humstr, humRef, uid, count) {
 	var x;
 	humRef.on('value', function(snapshot) {
-		//console.log("humsnapshot.val is " + snapshot.val());
+		console.log("humsnapshot.val is " + snapshot.val());
 		updates["users/" + uid + "/rooms/" + count + "/latestHumid"] = snapshot.val();
 		x = document.getElementById(humstr);
 		x.innerText = snapshot.val();
@@ -99,7 +112,7 @@ function humlisten(humstr, humRef, uid, count) {
 function templisten(tempstr, tempRef, uid, count) {
 	var y;
 	tempRef.on('value', function(snapshot) {
-		//console.log("tempsnapshot.val is " + snapshot.val());
+		console.log("tempsnapshot.val is " + snapshot.val());
 		updates["users/" + uid + "/rooms/" + count + "/latestTemp"] = snapshot.val();
 		y = document.getElementById(tempstr);
 		y.innerText = snapshot.val();
@@ -112,6 +125,7 @@ function htmlnodecreation(uid, roomnum) {
 		var humstr = "hum" + i;
 		var tempstr = "temp" + i;
 		var roomstr = "room_" + i;
+		var roomid = "id_" + i;
 		var roomstrtitle = roomstr + "_title";
 		var detstring = "det_" + i;
 		var linebr = document.createElement("br");
@@ -119,7 +133,7 @@ function htmlnodecreation(uid, roomnum) {
 		var div = document.getElementById(roomstr);//HERE
 			var subdiv1 = document.createElement("div");
 			subdiv1.setAttribute('class','card');
-			subdiv1.setAttribute('id','cardextra');
+			subdiv1.setAttribute('id',roomid);
 				var subdiv2 = document.createElement("div");
 				subdiv2.setAttribute('class','card-body');
 					var h4 = document.createElement("h4");
@@ -230,6 +244,7 @@ function setup() {
 		},200);
 	} else {
 		console.log("null user");
+		alert("Known bug. Either ctrl+F5 or enter SSID again");
 	}
 }
 
