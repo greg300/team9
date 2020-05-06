@@ -1,3 +1,7 @@
+// written by: Alex Malynovsky
+// tested by: Omar Faheem, Nathaniel Glikman
+// debugged by: Gregory Giovannini
+
 #include "DHT.h"
 #define DHTPIN 2 
 #define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321

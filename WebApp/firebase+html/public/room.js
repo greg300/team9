@@ -1,3 +1,7 @@
+//written by: Alex Malynovsky
+//tested by: Nathaniel Glikman
+//debugged by: Gregory Giovannini
+
 var uid = sessionStorage.getItem('uid');
 var roomnum = sessionStorage.getItem('i');
 
@@ -21,20 +25,20 @@ var tempRef = firebase.database().ref(tempPath);
 var x = document.getElementById("humidityRead");
 var y = document.getElementById("tempRead");
 
+//on document load listener
 document.addEventListener("DOMContentLoaded", function() {
 	humlisten();
 	templisten();
 	readRoomName();
 	REF.once('value',function(snapshot) {
 		params = Object.values(snapshot.val());
-		//console.log(params);
 	});
 	setTimeout(() => {
-		//console.log(params);
 		paramSetup();
 	}, 600);
 });
 
+//event listener for room name change
 roomname.addEventListener("input", function() {
 	updates["users/" + uid + "/rooms/" + roomnum + "/roomName"] = roomname.textContent;	
 	setTimeout(() => {
@@ -42,6 +46,7 @@ roomname.addEventListener("input", function() {
 	}, 200);
 });
 
+//first time parameter synch
 function paramSetup() {
 	if (params[0] == true) {
 		dehum.setAttribute("checked","true");
@@ -65,7 +70,6 @@ function paramSetup() {
 	}
 	
 	var arr = params;
-	//console.log("in setup: arr is " + params);
 	var mode = document.getElementById("mode");
 	if ( mode.checked == true ) {
 		plantcourseChange(params);
@@ -75,11 +79,8 @@ function paramSetup() {
 
 }
 
-
-
+//function for updating new params and synchronizing with db
 function updateParams() {
-	console.log("in updateParams");
-	
 	dehum = document.getElementById("dehumidifier").checked;
 	door = document.getElementById("door").checked;
 	fan = document.getElementById("fan").checked;
@@ -93,7 +94,6 @@ function updateParams() {
 	updates[refpath + "/window"] = win;
 	
 	var arr = [dehum, door, fan, humid, win];
-	//console.log("in updateParams: arr is " + arr);
 	var mode = document.getElementById("mode");
 	if ( mode.checked == true ) {
 		plantcourseChange(arr);
@@ -105,12 +105,12 @@ function updateParams() {
 	}, 200);
 }
 
+//Algorithm Layer - Greenhouse
 function plantcourseChange(arr) {
 	//0 is dehum, 1 is door, 2 is fan, 3 is humid, 4 is win
 	//x.innerText is humidity y.innerText is temperature
 	//course is course-of-action text
 	var recarr = arr;
-	
 	
 	console.log("in plant course change with arr = " + arr);
 	var dehum = recarr[0];
@@ -176,6 +176,7 @@ function plantcourseChange(arr) {
 	}
 }
 
+//Algorithm Layer - Residence
 function courseChange(arr) {
 	//0 is dehum, 1 is door, 2 is fan, 3 is humid, 4 is win
 	//x.innerText is humidity y.innerText is temperature
@@ -239,6 +240,8 @@ function courseChange(arr) {
 	
 }
 
+//Auxiliary functions and listeners
+
 function humlisten() {
 	
 	humRef.on('value', function(snapshot) {
@@ -272,7 +275,5 @@ function toggleMode() {
 		
 		document.getElementById("navtop").style.backgroundColor = "#42c5f5";
 		document.getElementById("footercolor").style.backgroundColor = "#42c5f5";
-	}
-	//code for residence/greenhouse
-	
+	}	
 }

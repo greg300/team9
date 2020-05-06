@@ -1,3 +1,8 @@
+//written by: Alex Malynovsky
+//tested by: Nathaniel Glikman
+//debugged by: Gregory Giovannini
+
+
 const database = firebase.database();
 
 function toggleLogin() {
