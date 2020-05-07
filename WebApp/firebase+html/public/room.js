@@ -105,6 +105,8 @@ function updateParams() {
 	}, 200);
 }
 
+//Algorithm Layer (Not Fully implemented - Fully documented within /Research/)
+
 //Algorithm Layer - Greenhouse
 function plantcourseChange(arr) {
 	//0 is dehum, 1 is door, 2 is fan, 3 is humid, 4 is win
