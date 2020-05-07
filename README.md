@@ -1,3 +1,6 @@
+# github
+https://github.com/greg300/team9/
+
 # team9
 Software Engineering Team 9
 
@@ -21,7 +24,7 @@ However, a video was linked through email showcasing the algorithm in effect. He
 https://streamable.com/c99d8d
 
 Starting from /root/, ESP8266connect contains the code that is uploaded to every wifi module in order for it to connect to
-the hardcoded network as well as our Firebase database.
+the hardcoded network as well as our Firebase database. The libraries are also included that are necessary to run the code.
 
 the Web App source files are entirely contained within WebApp/firebase+html/public
 
